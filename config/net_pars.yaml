@@ -1,0 +1,10 @@
+num_layers_sigma : 2
+hidden_dim_sigma : 128
+output_dim_sigma : 15
+Time_step : 1.
+num_layers_color : 3
+hidden_dim_color : 128
+forward_type : 'skip'
+neuron_type : 'Custom_LIF'
+tau : 2.0
+vth : 0.5
