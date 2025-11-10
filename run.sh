@@ -1,5 +1,14 @@
 ### Synthetic-NeRF Dataset
-# python  main.py  /home/linranxi/Code/DATA/nerf_synthetic/chair  --workspace /home/linranxi/Code/PATA/workspace/original/nerf_synthetic/chair_LIF -O --data_format nerf
+python  main.py  /home/linrx/Data/nerf_synthetic/chair  --workspace /home/linrx/Code/original_version_QuanPATA/workspace/original/nerf_synthetic/chair_LIF -O --data_format nerf --net snn --Time_step 4
+python  main.py  /home/linranxi/Code/DATA/nerf_synthetic/mic  --workspace /home/linranxi/Code/PATA/workspace/original/nerf_synthetic/mic_t4 -O --data_format nerf --net snn --Time_step 4
+python  main.py  /home/linranxi/Code/DATA/nerf_synthetic/ship  --workspace /home/linranxi/Code/PATA/workspace/original/nerf_synthetic/ship_t4 -O --data_format nerf --selfbound --bound 1.3  --net snn --Time_step 4
+python  main.py  /home/linranxi/Code/DATA/nerf_synthetic/drums  --workspace /home/linranxi/Code/PATA/workspace/original/nerf_synthetic/drums_t4 -O --data_format nerf  --net snn --Time_step 4
+python  main.py  /home/linranxi/Code/DATA/nerf_synthetic/ficus  --workspace /home/linranxi/Code/PATA/workspace/original/nerf_synthetic/ficus_t4 -O --data_format nerf  --net snn --Time_step 4
+python  main.py  /home/linranxi/Code/DATA/nerf_synthetic/lego  --workspace /home/linranxi/Code/PATA/workspace/original/nerf_synthetic/lego_t4 -O --data_format nerf  --net snn --Time_step 4
+python  main.py  /home/linranxi/Code/DATA/nerf_synthetic/materials  --workspace /home/linranxi/Code/PATA/workspace/original/nerf_synthetic/materials_t4 -O --data_format nerf  --net snn --Time_step 4
+python  main.py  /home/linranxi/Code/DATA/nerf_synthetic/hotdog  --workspace /home/linranxi/Code/PATA/workspace/original/nerf_synthetic/hotdog_t4 -O --data_format nerf --selfbound --bound 1.3  --net snn --Time_step 4
+
+
 # python  main.py  /home/linranxi/Code/DATA/nerf_synthetic/chair  --workspace /home/linranxi/Code/PATA/workspace/original/nerf_synthetic_dynamic/chair2  --pth_path /home/linranxi/Code/PATA/workspace/original/nerf_synthetic/chair2/checkpoints/ngp_ep0100.pth  -O -D --data_format nerf
 # python temp.py /home/linranxi/Code/DATA/nerf_synthetic/chair  --workspace /home/linranxi/Code/PATA/workspace/quan/test/chair -O --data_format nerf
 # python  main.py  /home/linranxi/Code/DATA/nerf_synthetic/chair  --workspace /home/linranxi/Code/PATA/workspace/ann/nerf_synthetic/chair -O --data_format nerf
@@ -241,4 +250,4 @@
 
 
 # python  main.py  /home/linrx/Data/nerf_synthetic/lego  --workspace /home/linrx/Code/PATA_Quan/workspace/synthetic_nerf/ann/lego -O --data_format nerf
-python feature_grid_visual.py  /home/linrx/Data/nerf_synthetic/lego  --workspace /home/linrx/Code/PATA_Quan/workspace/synthetic_nerf/ann/lego -O --data_format nerf
+# python feature_grid_visual.py  /home/linrx/Data/nerf_synthetic/lego  --workspace /home/linrx/Code/PATA_Quan/workspace/synthetic_nerf/ann/lego -O --data_format nerf

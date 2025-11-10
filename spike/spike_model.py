@@ -27,8 +27,8 @@ class SMLP(renderer.NeRFRenderer):
         self.hidden_dim_color = opt.hidden_dim_color
         self.num_layers_color = opt.num_layers_color
         self.output_dim_sigma = opt.output_dim_sigma    
+        self.Init_Time_step = int(opt.Time_step)   # Record the initial value of the time step
         self.Time_step = int(max(opt.Time_step // 4, 1)) # Avoid OOM
-        self.Init_Time_Step = int(opt.Time_step)   # Record the initial value of the time step
         self.device = device
         assert opt.forward_type in ['pure', 'skip', 'hybrid'], 'forward_type must be in [pure, skip, hybrid], while got {}'.format(opt.forward_type)
         self.forward_type = opt.forward_type
@@ -41,7 +41,7 @@ class SMLP(renderer.NeRFRenderer):
         
         if opt.D or opt.ptq:
             # Trainable time step
-            self.init_w = nn.Parameter(torch.tensor(7., device = device))
+            self.init_w = nn.Parameter(torch.tensor(self.Time_step - 1, device = device))
         else:
             self.init_w = torch.tensor(self.Time_step, device = device)
         
@@ -64,7 +64,7 @@ class SMLP(renderer.NeRFRenderer):
             
             self.init_b = nn.Parameter(-torch.log(torch.tensor(opt.tau - 1., device = device)))
             self.learned_tau = 1 / self.init_b.sigmoid()
-            self.tau_time = torch.clamp(self.init_w, min=1, max=self.Time_Step)
+            self.tau_time = torch.clamp(self.init_w, min=1, max=self.Time_step)
             spike_neuron_param = {'v_threshold': self.vth, 'v_reset': None, 'decay_input': False, 'init_tau':opt.tau, 'detach_reset': False}
             neurons = neuron.ParametricLIFNode
             self.iterators = lambda x, y : (1 - 1 / self.learned_tau) * x + 1 / self.learned_tau * y
@@ -159,9 +159,9 @@ class SMLP(renderer.NeRFRenderer):
         color_list = []
 
         self.learned_tau = 1 / self.init_b.sigmoid()
-        self.tau_time = torch.clamp(self.init_w, min=1, max=self.Init_Time_Step)
+        self.tau_time = torch.clamp(self.init_w, min=1, max=self.Init_Time_step)
         self.xyz_embedding = self.encoder(x, bound = self.bound)
-        
+        self.dirs = self.encoder_dir(d)
         # First time step: No decay mode
         self.reassignment(self.sigma_net, decay_input = False, item = 'decay_input')
         self.reassignment(self.color_net, decay_input = False, item = 'decay_input')
@@ -519,7 +519,7 @@ class SMLP(renderer.NeRFRenderer):
         self.soft_data = {}
         
         self.learned_tau = 1 / self.init_b.sigmoid()
-        self.tau_time = torch.clamp(self.init_w, min=1, max=self.Init_Time_Step)
+        self.tau_time = torch.clamp(self.init_w, min=1, max=self.Init_Time_step)
 
         if self.training:
             if self.xyz_embedding is None:

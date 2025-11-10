@@ -615,7 +615,7 @@ class Trainer(object):
             loss_cauchy = self.model.sigma_cauchy_loss * gamma_2
 
             if self.opt.D:
-                if self.model.Time_step == self.model.Init_Time_Step:
+                if self.model.Time_step == self.model.Time_step:
                     loss_clip_time = self.weight_sum(outputs['image'], self.model.tau_time, gt_rgb).mean(-1).mean()   # (N, 3) -> (N)
                     loss_pernalty = loss_final_time.data / loss_clip_time.data * torch.exp(self.model.tau_time) * beta#1e-6# 5e-7  * 1e-7
                     loss_extra = (outputs['extra_out'][0] + outputs['extra_out'][1] / torch.norm(outputs['image'][-1], p = 2)).mean() * alpha + loss_exp_tau
@@ -753,8 +753,8 @@ class Trainer(object):
         for epoch in range(self.epoch + 1, max_epochs + 1):
             self.epoch = epoch
             if hasattr(self.model, 'forward_type'): 
-                if self.model.Time_step < self.model.Init_Time_Step:
-                    self.model.Time_step = int(min(self.model.Time_Step + (epoch-1) * 6, self.model.Init_Time_Step))
+                if self.model.Time_step < self.model.Init_Time_step:
+                    self.model.Time_step = int(min(self.model.Time_step + (epoch-1) * 6, self.model.Init_Time_step))
                     self.model.Time_step = max(self.model.Time_step, 1)
                 self.train_one_epoch(train_loader)
                 
@@ -990,7 +990,7 @@ class Trainer(object):
             self.optimizer.zero_grad()    
 
             # if self.opt.D:
-            #     self.model.tau_time = torch.clamp(self.model.init_w, min=1, max=self.model.Init_Time_Step)      
+            #     self.model.tau_time = torch.clamp(self.model.init_w, min=1, max=self.model.Time_step)      
 
             preds, truths, loss_net = self.train_step(data)
             # break
